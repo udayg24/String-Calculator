@@ -31,6 +31,15 @@ final class String_CalculatorTests: XCTestCase {
     func testTwoNumbersSeperatedByComma() {
         XCTAssertEqual(sut.add("2,3"), 5)
     }
+    
+    func testNewLinesBetweenNumbers() {
+        XCTAssertEqual(sut.add("1\n2\n3"), 6)
+    }
+    
+    func testNewLinesAndCommasBetweenNumbers() {
+        XCTAssertEqual(sut.add("1\n2,3"), 6)
+    }
+    
 
     func testExample() throws {
         // This is an example of a functional test case.

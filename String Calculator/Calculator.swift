@@ -13,6 +13,7 @@ class Calculator {
         guard !numbers.isEmpty else {
             return 0
         }
-        return Int(numbers) ?? 0
+        let parts = numbers.components(separatedBy: ",")
+        return parts.compactMap { Int($0) }.reduce(0, +)
     }
 }

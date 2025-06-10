@@ -40,6 +40,10 @@ final class String_CalculatorTests: XCTestCase {
         XCTAssertEqual(sut.add("1\n2,3"), 6)
     }
     
+    func testNewLinesAndCommasAndSpacesBetweenNumbers() {
+        XCTAssertEqual(sut.add("1\n2, 3"), 6)
+    }
+    
 
     func testExample() throws {
         // This is an example of a functional test case.

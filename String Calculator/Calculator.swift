@@ -13,7 +13,7 @@ class Calculator {
         guard !numbers.isEmpty else {
             return 0
         }
-        let parts = numbers.components(separatedBy: ",")
-        return parts.compactMap { Int($0) }.reduce(0, +)
+        let parts = numbers.components(separatedBy: CharacterSet(charactersIn: ",\n"))
+        return parts.compactMap { Int($0.trimmingCharacters(in: .whitespaces)) }.reduce(0, +)
     }
 }

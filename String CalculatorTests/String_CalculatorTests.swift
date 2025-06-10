@@ -58,28 +58,44 @@ final class String_CalculatorTests: XCTestCase {
     
     func testNegativeNumberThrowException() {
         XCTAssertThrowsError(try sut.add("4,-3,3")) { error in
-            XCTAssertEqual(error as? CalculatorError, .negativeNumbers([-3]))
+            guard let error = error as? CalculatorError else {
+                      XCTFail("Expected CalculatorError")
+                      return
+                  }
+            XCTAssertEqual(error, .negativeNumbers([-3]))
             XCTAssertEqual(error.localizedDescription, "negative numbers not allowed -3")
         }
     }
     
     func testMultipleNegativeNumbersThrowExpection() {
         XCTAssertThrowsError(try sut.add("-9,-3,1")) { error in
-            XCTAssertEqual(error as? CalculatorError, .negativeNumbers([-9, -3]))
+            guard let error = error as? CalculatorError else {
+                      XCTFail("Expected CalculatorError")
+                      return
+                  }
+            XCTAssertEqual(error, .negativeNumbers([-9, -3]))
             XCTAssertEqual(error.localizedDescription, "negative numbers not allowed -9,-3")
         }
     }
     
     func testNegativeNumbersWithCustomDelimiter() {
         XCTAssertThrowsError(try sut.add("//;\n4;-2;7;-5")) { error in
-            XCTAssertEqual(error as? CalculatorError, .negativeNumbers([-2, -5]))
+            guard let error = error as? CalculatorError else {
+                      XCTFail("Expected CalculatorError")
+                      return
+                  }
+            XCTAssertEqual(error, .negativeNumbers([-2, -5]))
             XCTAssertEqual(error.localizedDescription, "negative numbers not allowed -2,-5")
         }
     }
     
     func testNegativeNumbersWithCustomDelimiterAndWhiteSpaces() {
         XCTAssertThrowsError(try sut.add("//;\n4;-2;7; -5")) { error in
-            XCTAssertEqual(error as? CalculatorError, .negativeNumbers([-2, -5]))
+            guard let error = error as? CalculatorError else {
+                      XCTFail("Expected CalculatorError")
+                      return
+                  }
+            XCTAssertEqual(error, .negativeNumbers([-2, -5]))
             XCTAssertEqual(error.localizedDescription, "negative numbers not allowed -2,-5")
         }
     }

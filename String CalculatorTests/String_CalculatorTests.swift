@@ -27,6 +27,10 @@ final class String_CalculatorTests: XCTestCase {
     func testSingleNumberReturnsNumberItself() {
         XCTAssertEqual(sut.add("1"), 1)
     }
+    
+    func testTwoNumbersSeperatedByComma() {
+        XCTAssertEqual(sut.add("2,3"), 5)
+    }
 
     func testExample() throws {
         // This is an example of a functional test case.

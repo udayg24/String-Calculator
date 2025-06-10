@@ -12,7 +12,8 @@ class Calculator {
     func add(_ numbers: String) throws -> Int {
         guard !numbers.isEmpty else { return 0 }
         
-        let (delimiter, numberString) = extractDelimiterAndNumbers(from: numbers)
+        let normalizedNumbers = numbers.replacingOccurrences(of: "\\n", with: "\n")
+        let (delimiter, numberString) = extractDelimiterAndNumbers(from: normalizedNumbers)
         
         let parsedNumbers = numberString
             .replacingOccurrences(of: "\n", with: delimiter)
@@ -26,13 +27,13 @@ class Calculator {
         
         return parsedNumbers.reduce(0, +)
     }
-
+    
     private func extractDelimiterAndNumbers(from input: String) -> (String, String) {
         guard input.hasPrefix("//") else {
             return (",", input)
         }
         
-        let lines = input.components(separatedBy: "\n")
+        let lines = input.components(separatedBy: "\n")     
         guard lines.count >= 2 else {
             return (",", input)
         }

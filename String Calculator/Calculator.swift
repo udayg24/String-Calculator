@@ -10,21 +10,29 @@ import Foundation
 class Calculator {
     
     func add(_ numbers: String) -> Int {
-        guard !numbers.isEmpty else {
-            return 0
-        }
-        var delimiter = ","
-        var numberString = numbers
-        if numberString.hasPrefix("//") {
-            let parts = numberString.components(separatedBy: "\n")
-            if parts.count >= 2 {
-                delimiter = String(parts[0].dropFirst(2))
-                numberString = parts[1...].joined(separator: "\n")
-            }
-        }
-        let parts = numberString.replacingOccurrences(of: "\n", with: delimiter)
-                                .components(separatedBy: delimiter)
+        guard !numbers.isEmpty else { return 0 }
         
-        return parts.compactMap { Int($0.trimmingCharacters(in: .whitespaces)) }.reduce(0, +)
+        let (delimiter, numberString) = extractDelimiterAndNumbers(from: numbers)
+        
+        return numberString
+            .replacingOccurrences(of: "\n", with: delimiter)
+            .components(separatedBy: delimiter)
+            .compactMap { Int($0.trimmingCharacters(in: .whitespaces)) }
+            .reduce(0, +)
+    }
+
+    private func extractDelimiterAndNumbers(from input: String) -> (String, String) {
+        guard input.hasPrefix("//") else {
+            return (",", input)
+        }
+        
+        let lines = input.components(separatedBy: "\n")
+        guard lines.count >= 2 else {
+            return (",", input)
+        }
+        
+        let delimiter = String(lines[0].dropFirst(2))
+        let numberString = lines[1...].joined(separator: "\n")
+        return (delimiter, numberString)
     }
 }

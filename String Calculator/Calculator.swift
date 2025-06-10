@@ -9,7 +9,7 @@ import Foundation
 
 class Calculator {
     
-    func add(_ numbers: String) -> Int {
+    func add(_ numbers: String) throws -> Int {
         guard !numbers.isEmpty else { return 0 }
         
         let (delimiter, numberString) = extractDelimiterAndNumbers(from: numbers)
@@ -34,5 +34,17 @@ class Calculator {
         let delimiter = String(lines[0].dropFirst(2))
         let numberString = lines[1...].joined(separator: "\n")
         return (delimiter, numberString)
+    }
+}
+
+enum CalculatorError: Error, Equatable {
+    case negativeNumbers([Int])
+    
+    var localizedDescription: String {
+        switch self {
+        case .negativeNumbers(let numbers):
+            let numberList = numbers.map(String.init).joined(separator: ",")
+            return "negative numbers not allowed \(numberList)"
+        }
     }
 }

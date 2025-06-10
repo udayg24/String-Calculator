@@ -21,39 +21,67 @@ final class String_CalculatorTests: XCTestCase {
     }
     
     func testEmptyStringReturnsZero() {
-        XCTAssertEqual(sut.add(""), 0)
+        XCTAssertEqual(try sut.add(""), 0)
     }
     
     func testSingleNumberReturnsNumberItself() {
-        XCTAssertEqual(sut.add("1"), 1)
+        XCTAssertEqual(try sut.add("1"), 1)
     }
     
     func testTwoNumbersSeperatedByComma() {
-        XCTAssertEqual(sut.add("2,3"), 5)
+        XCTAssertEqual(try sut.add("2,3"), 5)
     }
     
     func testNewLinesBetweenNumbers() {
-        XCTAssertEqual(sut.add("1\n2\n3"), 6)
+        XCTAssertEqual(try sut.add("1\n2\n3"), 6)
     }
     
     func testNewLinesAndCommasBetweenNumbers() {
-        XCTAssertEqual(sut.add("1\n2,3"), 6)
+        XCTAssertEqual(try sut.add("1\n2,3"), 6)
     }
     
     func testNewLinesAndCommasAndSpacesBetweenNumbers() {
-        XCTAssertEqual(sut.add("1\n2, 3"), 6)
+        XCTAssertEqual(try sut.add("1\n2, 3"), 6)
     }
     
     func testSimpleCustomDelimiter() {
-        XCTAssertEqual(sut.add("//;\n1;2"), 3)
+        XCTAssertEqual(try sut.add("//;\n1;2"), 3)
     }
     
     func testCustomDelimiterWithMultipleNewLines() {
-        XCTAssertEqual(sut.add("//;\n1;2\n3;4"), 10)
+        XCTAssertEqual(try sut.add("//;\n1;2\n3;4"), 10)
     }
     
     func testCustomDelimiterWithMultipleNewLinesAndWhiteSpaces() {
-        XCTAssertEqual(sut.add("//;\n1;2\n 3; 4"), 10)
+        XCTAssertEqual(try sut.add("//;\n1;2\n 3; 4"), 10)
+    }
+    
+    func testNegativeNumberThrowException() {
+        XCTAssertThrowsError(try sut.add("4,-3,3")) { error in
+            XCTAssertEqual(error as? CalculatorError, .negativeNumbers([-3]))
+            XCTAssertEqual(error.localizedDescription, "negative numbers not allowed -3")
+        }
+    }
+    
+    func testMultipleNegativeNumbersThrowExpection() {
+        XCTAssertThrowsError(try sut.add("-9,-3,1")) { error in
+            XCTAssertEqual(error as? CalculatorError, .negativeNumbers([-9, -3]))
+            XCTAssertEqual(error.localizedDescription, "negative numbers not allowed -9,-3")
+        }
+    }
+    
+    func testNegativeNumbersWithCustomDelimiter() {
+        XCTAssertThrowsError(try sut.add("//;\n4;-2;7;-5")) { error in
+            XCTAssertEqual(error as? CalculatorError, .negativeNumbers([-2, -5]))
+            XCTAssertEqual(error.localizedDescription, "negative numbers not allowed -2,-5")
+        }
+    }
+    
+    func testNegativeNumbersWithCustomDelimiterAndWhiteSpaces() {
+        XCTAssertThrowsError(try sut.add("//;\n4;-2;7; -5")) { error in
+            XCTAssertEqual(error as? CalculatorError, .negativeNumbers([-2, -5]))
+            XCTAssertEqual(error.localizedDescription, "negative numbers not allowed -2,-5")
+        }
     }
     
 

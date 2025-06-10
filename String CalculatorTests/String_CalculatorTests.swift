@@ -44,6 +44,18 @@ final class String_CalculatorTests: XCTestCase {
         XCTAssertEqual(sut.add("1\n2, 3"), 6)
     }
     
+    func testSimpleCustomDelimiter() {
+        XCTAssertEqual(sut.add("//;\n1;2"), 3)
+    }
+    
+    func testCustomDelimiterWithMultipleNewLines() {
+        XCTAssertEqual(sut.add("//;\n1;2\n3;4"), 10)
+    }
+    
+    func testCustomDelimiterWithMultipleNewLinesAndWhiteSpaces() {
+        XCTAssertEqual(sut.add("//;\n1;2\n 3; 4"), 10)
+    }
+    
 
     func testExample() throws {
         // This is an example of a functional test case.

@@ -23,6 +23,10 @@ final class String_CalculatorTests: XCTestCase {
     func testEmptyStringReturnsZero() {
         XCTAssertEqual(sut.add(""), 0)
     }
+    
+    func testSingleNumberReturnsNumberItself() {
+        XCTAssertEqual(sut.add("1"), 1)
+    }
 
     func testExample() throws {
         // This is an example of a functional test case.

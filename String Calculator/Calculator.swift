@@ -14,11 +14,17 @@ class Calculator {
         
         let (delimiter, numberString) = extractDelimiterAndNumbers(from: numbers)
         
-        return numberString
+        let parsedNumbers = numberString
             .replacingOccurrences(of: "\n", with: delimiter)
             .components(separatedBy: delimiter)
             .compactMap { Int($0.trimmingCharacters(in: .whitespaces)) }
-            .reduce(0, +)
+        
+        let negativeNumbers = parsedNumbers.filter { $0 < 0 }
+        if !negativeNumbers.isEmpty {
+            throw CalculatorError.negativeNumbers(negativeNumbers)
+        }
+        
+        return parsedNumbers.reduce(0, +)
     }
 
     private func extractDelimiterAndNumbers(from input: String) -> (String, String) {

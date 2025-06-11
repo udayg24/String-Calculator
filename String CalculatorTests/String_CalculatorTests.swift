@@ -100,6 +100,47 @@ final class String_CalculatorTests: XCTestCase {
         }
     }
     
+    func testInvalidCharacters() {
+        XCTAssertThrowsError(try sut.add("1,a,5")) { error in
+            guard let error = error as? CalculatorError else {
+                      XCTFail("Expected CalculatorError")
+                      return
+                  }
+            XCTAssertEqual(error, .invalidInput)
+        }
+        XCTAssertThrowsError(try sut.add("1,,5")) { error in
+            guard let error = error as? CalculatorError else {
+                      XCTFail("Expected CalculatorError")
+                      return
+                  }
+            XCTAssertEqual(error, .invalidInput)
+        }
+    }
+    
+    func testInvalidInputWithCustomDelimiter() {
+        XCTAssertThrowsError(try sut.add("//;")) { error in
+            guard let error = error as? CalculatorError else {
+                      XCTFail("Expected CalculatorError")
+                      return
+                  }
+            XCTAssertEqual(error, .invalidInput)
+        }
+        XCTAssertThrowsError(try sut.add("//\n1,3")) { error in
+            guard let error = error as? CalculatorError else {
+                      XCTFail("Expected CalculatorError")
+                      return
+                  }
+            XCTAssertEqual(error, .invalidInput)
+        }
+        XCTAssertThrowsError(try sut.add("//abc\n1,3")) { error in
+            guard let error = error as? CalculatorError else {
+                      XCTFail("Expected CalculatorError")
+                      return
+                  }
+            XCTAssertEqual(error, .invalidInput)
+        }
+    }
+    
 
     func testExample() throws {
         // This is an example of a functional test case.

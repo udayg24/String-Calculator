@@ -12,22 +12,23 @@ struct ContentView: View {
     @State private var additionResult: Int?
     @State private var errorMessage: String = ""
     @FocusState private var isTextFieldFocused: Bool
+    @State private var isCalculating: Bool = false
     private let calculator = Calculator()
     
     var body: some View {
         VStack(alignment: .center, spacing: 20) {
             
-            HeadlineTextView
-            
-            TextEditorView
-                .font(.title3)
-                .fontWeight(.regular)
-            
-            CalculateButtonView
-                .font(.title)
-                .fontWeight(.regular)
-            
-            ResultView
+            VStack(spacing: 32) {
+                HeadlineTextView
+                
+                VStack(spacing: 24) {
+                    TextEditorView
+                    CalculateButtonView
+                }
+                
+                ResultView
+            }
+            .padding(.horizontal, 32)
         }
     }
 }
@@ -67,23 +68,37 @@ extension ContentView {
     }
     
     private var CalculateButtonView: some View {
-        Button("Calculate Sum") {
-            errorMessage = ""
-            do {
-                additionResult = try calculator.add(inputText)
-            } catch let error as CalculatorError {
-                errorMessage = error.localizedDescription
-                additionResult = 0
-            } catch {
-                errorMessage = "Unexpected error occurred"
-                additionResult = 0
+        Button(action: performCalculation) {
+            HStack(spacing: 8) {
+                if isCalculating {
+                    ProgressView()
+                        .scaleEffect(0.8)
+                        .tint(.white)
+                } else {
+                    Image(systemName: "plus.circle.fill")
+                        .font(.system(size: 18, weight: .medium))
+                }
+                
+                Text("Calculate")
+                    .font(.system(size: 18, weight: .semibold, design: .rounded))
             }
+            .foregroundColor(.white)
+            .frame(maxWidth: .infinity)
+            .frame(height: 52)
+            .background(
+                LinearGradient(
+                    colors: [Color.blue, Color.blue.opacity(0.8)],
+                    startPoint: .leading,
+                    endPoint: .trailing
+                )
+            )
+            .clipShape(RoundedRectangle(cornerRadius: 16))
+            .scaleEffect(isCalculating ? 0.90 : 1.0)
+            .animation(.easeInOut(duration: 0.1), value: isCalculating)
         }
-        .padding()
-        .background(Color.blue)
-        .buttonStyle(.borderedProminent)
-        .foregroundColor(.white)
-        .cornerRadius(20)
+        .disabled(isCalculating || inputText.trimmingCharacters(in: .whitespaces).isEmpty)
+        .opacity(inputText.trimmingCharacters(in: .whitespaces).isEmpty ? 0.6 : 1.0)
+        .animation(.easeInOut(duration: 0.2), value: inputText.isEmpty)
     }
     
     private var ResultView: some View {
@@ -97,6 +112,24 @@ extension ContentView {
                     .font(.headline)
                     .padding()
             }
+        }
+    }
+    
+    private func performCalculation() {
+        isTextFieldFocused = false
+        errorMessage = ""
+        additionResult = nil
+        isCalculating = true
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
+            do {
+                additionResult = try calculator.add(inputText)
+            } catch let error as CalculatorError {
+                errorMessage = error.localizedDescription
+            } catch {
+                errorMessage = "Unexpected error occurred"
+            }
+            isCalculating = false
         }
     }
 }

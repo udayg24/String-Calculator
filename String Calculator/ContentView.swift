@@ -33,10 +33,16 @@ struct ContentView: View {
 extension ContentView {
     
     private var HeadlineTextView: some View {
-        Text("String Calculator")
-            .font(.largeTitle)
-            .fontWeight(.medium)
-            .padding()
+        VStack(spacing: 8) {
+            Text("String Calculator")
+                .font(.system(size: 32, weight: .light, design: .rounded))
+                .foregroundColor(.primary)
+            
+            Text("Add numbers with custom delimiters")
+                .font(.system(size: 16, weight: .regular, design: .rounded))
+                .foregroundColor(.secondary)
+        }
+        .multilineTextAlignment(.center)
     }
     
     private var TextEditorView: some View {

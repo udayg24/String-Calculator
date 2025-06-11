@@ -25,3 +25,44 @@ xed .
 ```
 
 3. Build and run the project (⌘+R)
+
+## Testing
+
+Run the tests:
+```bash
+# In XCode: ⌘+U
+# via command line:
+xcodebuild test -scheme "String Calculator" -destination "platform=iOS Simulator,name=iPhone 16 Pro"
+```
+
+## Screenshots
+
+- Adaptive for both Light and Dark Modes
+
+<table>
+<tr>
+<td><img src="screenshots/home-dark-mode.png" alt="Dark Mode" width="300"/></td>
+<td><img src="screenshots/home-light-mode.png" alt="Light Mode" width="300"/></td>
+</tr>
+<tr>
+<td align="center"><b>Dark Mode</b></td>
+<td align="center"><b>Light Mode</b></td>
+</tr>
+</table>
+
+- Functionality
+
+<table>
+<tr>
+<td><img src="screenshots/sample-valid-input-result.png" alt="Dark Mode" width="300"/></td>
+<td><img src="screenshots/sample-negative-input-result.png" alt="Light Mode" width="300"/></td>
+<td><img src="screenshots/sample-invalid-input-result.png" alt="Light Mode" width="300"/></td>
+</tr>
+<tr>
+<td align="center"><b>Valid Input</b></td>
+<td align="center"><b>Negative Input</b></td>
+<td align="center"><b>Invalid Input</b></td>
+</tr>
+</table>
+
+

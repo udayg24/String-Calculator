@@ -11,6 +11,7 @@ struct ContentView: View {
     @State private var inputText: String = ""
     @State private var additionResult: Int?
     @State private var errorMessage: String = ""
+    @FocusState private var isTextFieldFocused: Bool
     private let calculator = Calculator()
     
     var body: some View {
@@ -46,10 +47,23 @@ extension ContentView {
     }
     
     private var TextEditorView: some View {
-        TextEditor(text: $inputText)
-            .border(Color.gray, width: 2)
-            .frame(maxHeight: 100)
-            .padding()
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Input")
+                .font(.system(size: 14, weight: .medium, design: .rounded))
+                .foregroundColor(.secondary)
+                .padding(.leading, 4)
+            
+            TextField("Enter numbers (e.g., 1,2,3 or //;\n1;2;3)", text: $inputText, axis: .vertical)
+                .focused($isTextFieldFocused)
+                .padding(16)
+                .background(Color(.systemBackground))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12)
+                        .stroke(isTextFieldFocused ? Color.blue : Color(.systemGray4), lineWidth: 1.5)
+                )
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+                .animation(.easeInOut(duration: 0.2), value: isTextFieldFocused)
+        }
     }
     
     private var CalculateButtonView: some View {

@@ -81,6 +81,7 @@ extension ContentView {
             TextField("Enter numbers (e.g., 1,2,3 or //;\n1;2;3)", text: $inputText, axis: .vertical)
                 .focused($isTextFieldFocused)
                 .padding(16)
+                .lineLimit(1...5)
                 .background(Color(.systemBackground))
                 .overlay(
                     RoundedRectangle(cornerRadius: 12)
@@ -120,24 +121,62 @@ extension ContentView {
             .scaleEffect(isCalculating ? 0.90 : 1.0)
             .animation(.easeInOut(duration: 0.1), value: isCalculating)
         }
-        .disabled(isCalculating || inputText.trimmingCharacters(in: .whitespaces).isEmpty)
+        .disabled(isCalculating)
         .opacity(inputText.trimmingCharacters(in: .whitespaces).isEmpty ? 0.6 : 1.0)
         .animation(.easeInOut(duration: 0.2), value: inputText.isEmpty)
     }
     
-    private var ResultView: some View {
-        Group {
-            if !errorMessage.isEmpty {
-                Text(errorMessage)
-                    .foregroundColor(.red)
-                    .padding()
-            } else if let res = additionResult {
-                Text("Result: \(res)")
-                    .font(.headline)
-                    .padding()
+        private var ResultView: some View {
+            Group {
+                if !errorMessage.isEmpty {
+                    HStack(spacing: 12) {
+                        Image(systemName: "exclamationmark.triangle.fill")
+                            .font(.system(size: 24))
+                            .foregroundColor(.red)
+    
+                        Text(errorMessage)
+                            .font(.system(size: 18, weight: .medium, design: .rounded))
+                            .foregroundColor(.red)
+                            .multilineTextAlignment(.center)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(16)
+                    .background(Color.red.opacity(0.1))
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .transition(.asymmetric(
+                        insertion: .scale.combined(with: .opacity),
+                        removal: .opacity
+                    ))
+    
+                } else if let result = additionResult {
+                    HStack(spacing: 12) {
+                        Image(systemName: "checkmark.circle.fill")
+                            .font(.system(size: 24))
+                            .foregroundColor(.green)
+    
+                        HStack(spacing: 4) {
+                            Text("Result:")
+                                .font(.system(size: 18, weight: .medium, design: .rounded))
+                                .foregroundColor(.secondary)
+    
+                            Text("\(result)")
+                                .font(.system(size: 18, weight: .bold, design: .rounded))
+                                .foregroundColor(.primary)
+                        }
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(16)
+                    .background(Color.green.opacity(0.1))
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .transition(.asymmetric(
+                        insertion: .scale.combined(with: .opacity),
+                        removal: .opacity
+                    ))
+                }
             }
+            .animation(.spring(response: 0.6, dampingFraction: 0.8), value: additionResult)
+            .animation(.spring(response: 0.6, dampingFraction: 0.8), value: errorMessage)
         }
-    }
     
     private func performCalculation() {
         isTextFieldFocused = false
@@ -145,7 +184,7 @@ extension ContentView {
         additionResult = nil
         isCalculating = true
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.50) {
             do {
                 additionResult = try calculator.add(inputText)
             } catch let error as CalculatorError {

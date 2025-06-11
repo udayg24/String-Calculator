@@ -17,18 +17,42 @@ struct ContentView: View {
     
     var body: some View {
         VStack(alignment: .center, spacing: 20) {
-            
-            VStack(spacing: 32) {
-                HeadlineTextView
-                
-                VStack(spacing: 24) {
-                    TextEditorView
-                    CalculateButtonView
+            Spacer()
+            ZStack {
+                VStack(spacing: 20) {
+                    HeadlineTextView
+                    
+                    VStack(spacing: 24) {
+                        TextEditorView
+                        CalculateButtonView
+                    }
+                    
+                    ResultView
                 }
-                
-                ResultView
+                .padding(16)
+                .background(
+                    RoundedRectangle(cornerRadius: 20)
+                        .fill(.regularMaterial)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 20)
+                                .stroke(.white.opacity(0.2), lineWidth: 1)
+                        )
+                )
+                .shadow(color: .black.opacity(0.1), radius: 20, x: 0, y: 10)
+                .shadow(color: .black.opacity(0.05), radius: 5, x: 0, y: 2)
+                .padding(.horizontal, 16)
             }
-            .padding(.horizontal, 32)
+            Spacer()
+        }
+        .background(
+            LinearGradient(
+                colors: [Color(.systemBackground), Color(.systemGray3)],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+        )
+        .onTapGesture {
+            isTextFieldFocused = false
         }
     }
 }
@@ -37,7 +61,7 @@ extension ContentView {
     private var HeadlineTextView: some View {
         VStack(spacing: 8) {
             Text("String Calculator")
-                .font(.system(size: 32, weight: .light, design: .rounded))
+                .font(.system(size: 32, weight: .medium, design: .rounded))
                 .foregroundColor(.primary)
             
             Text("Add numbers with custom delimiters")
@@ -50,7 +74,7 @@ extension ContentView {
     private var TextEditorView: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Input")
-                .font(.system(size: 14, weight: .medium, design: .rounded))
+                .font(.system(size: 16, weight: .medium, design: .rounded))
                 .foregroundColor(.secondary)
                 .padding(.leading, 4)
             

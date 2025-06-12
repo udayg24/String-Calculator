@@ -33,6 +33,8 @@ Run the tests:
 # In XCode: ⌘+U
 # via command line:
 xcodebuild test -scheme "String Calculator" -destination "platform=iOS Simulator,name=iPhone 16 Pro"
+# UI tests:
+xcodebuild test -scheme "String Calculator" -destination "platform=iOS Simulator,name=iPhone 16 Pro" -only-testing:"String CalculatorUITests"
 ```
 
 ## Screenshots
@@ -41,8 +43,8 @@ xcodebuild test -scheme "String Calculator" -destination "platform=iOS Simulator
 
 <table>
 <tr>
-<td><img src="screenshots/home-dark-mode.png" alt="Dark Mode" width="300"/></td>
-<td><img src="screenshots/home-light-mode.png" alt="Light Mode" width="300"/></td>
+<td><img src="screenshots/home-dark-mode.png" alt="Dark Mode" width="250"/></td>
+<td><img src="screenshots/home-light-mode.png" alt="Light Mode" width="250"/></td>
 </tr>
 <tr>
 <td align="center"><b>Dark Mode</b></td>
@@ -54,9 +56,9 @@ xcodebuild test -scheme "String Calculator" -destination "platform=iOS Simulator
 
 <table>
 <tr>
-<td><img src="screenshots/sample-valid-input-result.png" alt="Dark Mode" width="300"/></td>
-<td><img src="screenshots/sample-negative-input-result.png" alt="Light Mode" width="300"/></td>
-<td><img src="screenshots/sample-invalid-input-result.png" alt="Light Mode" width="300"/></td>
+<td><img src="screenshots/sample-valid-input-result.png" alt="Dark Mode" width="250"/></td>
+<td><img src="screenshots/sample-negative-input-result.png" alt="Light Mode" width="250"/></td>
+<td><img src="screenshots/sample-invalid-input-result.png" alt="Light Mode" width="250"/></td>
 </tr>
 <tr>
 <td align="center"><b>Valid Input</b></td>
